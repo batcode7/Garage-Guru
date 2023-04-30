@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Garage Guru - Appointments</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>Garage Guru - Appointments</h1>
+    <table id="appointments-table">
+        <thead>
+            <tr>
+                <th>Appointment ID</th>
+                <th>Customer Name</th>
+                <th>Mobile Number</th>
+                <th>Appointment Date</th>
+                <th>Car Color</th>
+                <th>Car Engine Number</th>
+                <th>Car License Plate</th>
+                <th>Mechanic Name</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        // Make AJAX request to fetch appointments data
+        $(document).ready(function () {
+            $.ajax({
+                url: "orderDetails.php",
+                dataType: "json",
+                success: function (data) {
+                    if (data.length > 0) {
+                        // Append table rows with appointments data
+                        for (var i = 0; i < data.length; i++) {
+                            var appointment = data[i];
+                            $("#appointments-table tbody").append(
+                                "<tr>" +
+                                "<td>" + appointment.id + "</td>" +
+                                "<td>" + appointment.customerName + "</td>" +
+                                "<td>" + appointment.mobbileNumber + "</td>" +
+                                "<td>" + appointment.appointmentDate + "</td>" +
+                                "<td>" + appointment.carColor + "</td>" +
+                                "<td>" + appointment.carEngineNumber + "</td>" +
+                                "<td>" + appointment.carLicense + "</td>" +
+                                "<td>" + appointment.mechanicName + "</td>" +
+
+                                "<td><button onclick=\"showDetails('" + appointment.customerName + "', '" + appointment.id + "', '" + appointment.mobbileNumber + "', '" + appointment.appointmentDate + "', '" + appointment.carColor + "', '" + appointment.carEngineNumber + "', '" + appointment.carLicense + "', '" + appointment.mechanicName + "')\">Details</button></td>"
+                                +
+                                "</tr>"
+
+                            );
+                        }
+                    } else {
+                        // Display message if no appointments found
+                        $("#appointments-table tbody").append(
+                            "<tr><td colspan='8'>No appointments found</td></tr>"
+                        );
+                    }
+                }
+            });
+
+        });
+        function showDetails(name, appId, phone, date, color, engine, license, mechanic) {
+            localStorage.setItem("name", name);
+            localStorage.setItem("appId", appId);
+            localStorage.setItem("phone", phone);
+            localStorage.setItem("color", color);
+            localStorage.setItem("date", date);
+            localStorage.setItem("license", license);
+            localStorage.setItem("engine", engine);
+            localStorage.setItem("mechanic", mechanic);
+            window.location.href = "editAppointment.html";
+        }
+    </script>
+</body>
+
+</html>

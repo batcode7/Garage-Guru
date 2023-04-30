@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Mechanics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px #999;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"],
+        input[type="button"] {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover,
+        input[type="button"]:hover {
+            background-color: #555;
+        }
+
+        .or {
+            text-decoration: none;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Add Mechanics</h1>
+    <form action="add_mechanics.php" method="post">
+        <label for="mechanicName">Mechanic Name:</label>
+        <input type="text" id="mechanicName" name="mechanicName" required>
+        <label for="carCount">Car Count</label>
+        <input type="text" id="carCount" name="carCount" required>
+        <input type="submit" value="Add Mechanic">
+    </form>
+
+</body>
+
+</html>

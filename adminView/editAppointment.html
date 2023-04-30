@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit Appointment</title>
+</head>
+
+<body>
+    <h1>Edit Appointment</h1>
+    <form>
+        <label for="appId">ID:</label>
+        <input type="text" id="appId" name="appId" value="" readonly>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="" readonly>
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" value="" readonly>
+        <label for="color">Car Color:</label>
+        <input type="text" id="color" name="color" value="" readonly>
+        <label for="license">Car License Number:</label>
+        <input type="text" id="license" name="license" value="" readonly>
+        <label for="engine">Car Engine Number:</label>
+        <input type="text" id="engine" name="engine" value="" readonly>
+        <label for="date">Appointment Date:</label>
+        <input type="date" id="date" name="date" value="" required>
+        <label for="mechanic">Choose Your Mechanic:</label>
+        <select id="mechanic" name="mechanic" required>
+            <option value="">--Select--</option>
+        </select>
+
+        <input type="submit" value="Save">
+    </form>
+
+    <div class="response"></div>
+    <script>
+        document.getElementById("name").value = localStorage.getItem("name");
+        document.getElementById("appId").value = localStorage.getItem("appId");
+        document.getElementById("phone").value = localStorage.getItem("phone");
+        document.getElementById("color").value = localStorage.getItem("color");
+        document.getElementById("license").value = localStorage.getItem("license");
+        document.getElementById("engine").value = localStorage.getItem("engine");
+        document.getElementById("date").value = localStorage.getItem("date");
+        var mechanicSelect = document.getElementById("mechanic");
+        var mechanicOption = document.createElement("option");
+        mechanicOption.text = localStorage.getItem("mechanic");
+        mechanicOption.value = localStorage.getItem("mechanic");
+        mechanicOption.selected = true;
+        mechanicSelect.add(mechanicOption);
+    </script>
+
+    <script>
+        document.getElementById("date").addEventListener("change", function () {
+            // Get selected date value
+            var selectedDate = this.value;
+
+            // Send AJAX request to PHP code
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Parse response as JSON array
+                    var names = JSON.parse(this.responseText);
+                    //var names = (this.responseText);
+                    // Update mechanics dropdown options
+                    var mechanicSelect = document.getElementById("mechanic");
+                    mechanicSelect.innerHTML = ""; // clear existing options
+                    var defaultOption = document.createElement("option");
+                    defaultOption.text = "--Select--";
+                    mechanicSelect.add(defaultOption);
+
+                    console.log(names);
+                    for (var i = 0; i < names.length; i++) {
+                        var option = document.createElement("option");
+                        option.value = names[i];
+                        option.text = names[i];
+                        mechanicSelect.add(option);
+                    }
+                }
+            };
+            xhr.open("GET", "fetch_names.php?date=" + selectedDate, true);
+            xhr.send();
+        });
+    </script>
+
+
+    <script>
+        document.querySelector('input[type="submit"]').addEventListener('click', function (event) {
+            event.preventDefault(); // prevent default form submission
+
+            var appId = document.getElementById("appId").value;
+            var name = document.getElementById("name").value;
+            var phone = document.getElementById("phone").value;
+            var color = document.getElementById("color").value;
+            var license = document.getElementById("license").value;
+            var engine = document.getElementById("engine").value;
+            var date = document.getElementById("date").value;
+            var mechanic = document.getElementById("mechanic").value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'updateAppointmentDetail.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    window.location.href = 'orderDetails.html';
+                    <!-- console.log(response); -->
+                }
+
+            };
+            var data = 'id=' + encodeURIComponent(appId) +
+                '&name=' + encodeURIComponent(name) +
+                '&phone=' + encodeURIComponent(phone) +
+                '&color=' + encodeURIComponent(color) +
+                '&license=' + encodeURIComponent(license) +
+                '&engine=' + encodeURIComponent(engine) +
+                '&date=' + encodeURIComponent(date) +
+                '&mechanic=' + encodeURIComponent(mechanic);
+            xhr.send(data);
+            console.log(data);
+        });
+
+    </script>
+
+
+
+</body>
+
+</html>
